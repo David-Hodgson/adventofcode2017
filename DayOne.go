@@ -25,7 +25,6 @@ func getSum(input string) int {
 	}
 
 	return sum
-
 }
 
 func getSumHalfWay(input string) int {
