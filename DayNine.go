@@ -7,12 +7,19 @@ import (
 const GROUP =1
 const GARBAGE = 2
 
-func processStream(streamData string) int {
+func processStream(stramData string) int {
+
+	total, _ := processStreamWithGarbageCount(stramData)
+
+	return total
+}
+func processStreamWithGarbageCount(streamData string) (total, garbage int) {
 
 	var state int
 
 	groupDepth := 0
-	total := 0
+	total = 0
+	garbage = 0
 
 	for i := 0 ; i < len(streamData) ; i++ {
 
@@ -23,11 +30,13 @@ func processStream(streamData string) int {
 		if state == GARBAGE {
 			if current == ">" {
 				state = GROUP
+			} else if current == "!" {
+				i++
+			} else {
+				garbage++
 			}
 
-			if current == "!" {
-				i++
-			}
+
 		} else {
 
 			if current == "{" {
@@ -49,7 +58,7 @@ func processStream(streamData string) int {
 
 	}
 
-	return total
+	return total, garbage
 }
 
 func DayNineExample() {
@@ -88,5 +97,11 @@ func DayNinePartOne() {
 }
 
 
+func DayNinePartTwo() {
 
+	input := ReadFile("day9-input.txt")
+	total, garbageCount := processStreamWithGarbageCount(input)
+
+	fmt.Println("Day Nine - Part One - Total:", total, "Garbage Count:", garbageCount)
+}
 
