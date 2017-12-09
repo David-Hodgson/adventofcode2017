@@ -3,6 +3,7 @@ package adventofcode2017
 import (
 	"os"
 	"log"
+	"strings"
 )
 
 func ReadFile(filename string) string {
@@ -27,6 +28,10 @@ func ReadFile(filename string) string {
          }
 
       }
+   }
+
+   if strings.HasSuffix(contents, "\n") {
+      contents = contents[0:len(contents)-1]
    }
 
    return contents
