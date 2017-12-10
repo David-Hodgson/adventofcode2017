@@ -73,7 +73,7 @@ func toHexString(loop []int) string {
 
 	var hex string
 	for i := 0 ; i< len(loop); i++ {
-		h := fmt.Sprintf("%2x", loop[i])
+		h := fmt.Sprintf("%02x", loop[i])
 		hex += h
 	}
 
@@ -137,7 +137,7 @@ func DayTenPartTwo() {
 
 	loop := buildLoop(256)
 	inputString  := "147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70"
-	
+
 	inputs := make([]int, len(inputString));
 
 	for i := 0 ; i < len(inputString) ; i++ {
@@ -165,18 +165,11 @@ func DayTenPartTwo() {
 		process(loop, mergedlengths)
 	}
 
-	//fmt.Println(loop)
-		//fmt.Println("Item[0]:", loop[0])
-	//fmt.Println("Item[1]:", loop[1])
-	//
-	//fmt.Println("Result:", (loop[0]*loop[1]))
 	dense := convertSparseHashToDense(loop)
-
-	//fmt.Println(dense)
 
 	hex := toHexString(dense)
 
-	fmt.Println(hex)
+	fmt.Println("Knot Hex:", hex)
 
 
 }
