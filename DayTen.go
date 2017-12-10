@@ -2,6 +2,7 @@ package adventofcode2017
 
 import (
 	"fmt"
+	//"strconv"
 )
 
 func buildLoop(length int) []int {
@@ -49,19 +50,50 @@ func twist(loop []int, position int, length int) {
 	//fmt.Println(loop)
 }
 
+func convertSparseHashToDense(loop []int) []int {
+
+
+	dense := make([]int, len(loop)/16)
+
+	offset := 0;
+	for i := 0 ; i < len(dense); i++ {
+
+		dense[i] = loop[offset] ^ loop[offset+1] ^ loop[offset+2] ^ loop[offset+3] ^ loop[offset+4] ^
+			loop[offset+5]^ loop[offset+6] ^ loop[offset+7] ^ loop[offset+8] ^ loop[offset+9] ^
+			^ loop[offset+10] ^ loop[offset+11] ^ loop[offset+12] ^ loop[offset+13] ^
+			^ loop[offset+14] ^ loop[offset+15]
+
+		offset += 16
+	}
+
+	return dense
+}
+
+func toHexString(loop []int) string {
+
+	var hex string
+	for i := 0 ; i< len(loop); i++ {
+		h := fmt.Sprintf("%2x", loop[i])
+		hex += h
+	}
+
+	return hex
+
+}
+
+var(
+position int = 0
+skip int = 0
+)
+
 func process(loop []int, lengths []int) {
 
-	position := 0
-	skip := 0
-
 	for i := 0; i <len(lengths) ; i++ {
-		//fmt.Println(position)
-		//fmt.Println(skip)
 		twist(loop, position, lengths[i])
 		position += lengths[i] + skip
 
 		if position >= len(loop) {
-			position = position - len(loop)
+			position = position % len(loop)
 		}
 
 		skip++
@@ -90,6 +122,8 @@ func DayTenPartOne() {
 	loop := buildLoop(256)
 	inputs  := []int  {147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70}
 
+	position =0
+	skip = 0
 	process(loop, inputs)
 	fmt.Println("Item[0]:", loop[0])
 	fmt.Println("Item[1]:", loop[1])
@@ -97,4 +131,53 @@ func DayTenPartOne() {
 	fmt.Println("Result:", (loop[0]*loop[1]))
 }
 
+func DayTenPartTwo() {
+
+	fmt.Println("Day Ten - Part Two")
+
+	loop := buildLoop(256)
+	inputString  := "147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70"
+	
+	inputs := make([]int, len(inputString));
+
+	for i := 0 ; i < len(inputString) ; i++ {
+		inputs[i] = int(inputString[i])
+	}
+	extras := [] int {17, 31, 73, 47, 23}
+
+	mergedlengths := make([]int, (len(inputs) + len(extras)))
+
+	for i :=0; i<len(inputs);i++ {
+
+		mergedlengths[i] = inputs[i]
+	}
+
+	extraPos :=0
+	for i := len(inputs); i < len(mergedlengths); i++ {
+		mergedlengths[i] = extras[extraPos]
+		extraPos++
+	}
+
+	position = 0
+	skip = 0
+
+	for i :=0 ;i < 64 ; i++ {
+		process(loop, mergedlengths)
+	}
+
+	//fmt.Println(loop)
+		//fmt.Println("Item[0]:", loop[0])
+	//fmt.Println("Item[1]:", loop[1])
+	//
+	//fmt.Println("Result:", (loop[0]*loop[1]))
+	dense := convertSparseHashToDense(loop)
+
+	//fmt.Println(dense)
+
+	hex := toHexString(dense)
+
+	fmt.Println(hex)
+
+
+}
 
