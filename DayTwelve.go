@@ -62,13 +62,34 @@ func DayTwelveExample() {
 	fmt.Println("Program 0 destinations:", len(programMap["0"]))
 }
 
-func DayTwelvePartOne() {
+func processProgramPipes(programToStart string, programMap map[string]map[string]bool ) {
+	destinationSize := len(programMap[programToStart])
 
-	fmt.Println("Day Twelve - Part One")
+	for  {
 
-	input := ReadFile("day12-input.txt")
-	pipeList := strings.Split(input, "\n")
+		programsToProcess := programMap[programToStart]
 
+		for destprogram,_ := range programsToProcess {
+
+			//fmt.Println("Processing program:", destprogram)
+
+			for otherProgram,_ := range programMap[destprogram] {
+				programMap[programToStart][otherProgram] = true
+			}
+			//fmt.Println(programMap)
+		}
+
+		if len(programMap[programToStart]) == destinationSize {
+			//fmt.Println("Would have broke")
+			break;
+		}
+
+		destinationSize = len(programMap[programToStart])
+		//break;
+	}
+}
+
+func buildProgramMap(pipeList []string) map[string]map[string]bool {
 	programMap := make(map[string]map[string]bool)
 
 	for i := 0; i < len(pipeList); i++ {
@@ -86,32 +107,50 @@ func DayTwelvePartOne() {
 		programMap[sendingProgram] = destinationMap
 	}
 
-	destinationSize := len(programMap["0"])
+	return programMap
+}
 
-	for  {
+func DayTwelvePartOne() {
 
-		programsToProcess := programMap["0"]
+	fmt.Println("Day Twelve - Part One")
 
-		for destprogram,_ := range programsToProcess {
+	input := ReadFile("day12-input.txt")
+	pipeList := strings.Split(input, "\n")
 
-			//fmt.Println("Processing program:", destprogram)
-
-			for otherProgram,_ := range programMap[destprogram] {
-				programMap["0"][otherProgram] = true
-			}
-			//fmt.Println(programMap)
-		}
-
-		if len(programMap["0"]) == destinationSize {
-			//fmt.Println("Would have broke")
-			break;
-		}
-
-		destinationSize = len(programMap["0"])
-		//break;
-	}
+	programMap := buildProgramMap(pipeList)
+	processProgramPipes("0", programMap)
 
 	fmt.Println("Program 0 destinations:", len(programMap["0"]))
 }
 
 
+func DayTwelvePartTwo() {
+
+	fmt.Println("Day Twelve - Part Two")
+
+	input := ReadFile("day12-input.txt")
+	pipeList := strings.Split(input, "\n")
+
+	programMap := buildProgramMap(pipeList)
+	programGroupMaps := make(map[string]bool)
+
+	for destprogram,_ := range programMap {
+
+		process := true
+		for pg,_ := range programGroupMaps {
+			progToCheck := programMap[pg]
+
+			if progToCheck[destprogram] {
+				process = false
+			}
+		}
+
+		if process {
+			processProgramPipes(destprogram, programMap)
+			programGroupMaps[destprogram] = true
+		}
+
+	}
+
+	fmt.Println("Number of groups:", len(programGroupMaps))
+}
