@@ -70,6 +70,7 @@ func calculateSeverity(firewall map[int]fireWallLayer, secondsToRun int, startDe
 		if fwl, exists := firewall[currentPosition]; exists && started {
 			if fwl.pos == 1 {
 				caught = true
+				return severity,caught
 				//fmt.Println("Caught at pos", currentPosition)
 				//fmt.Println("Current Severity:", severity)
 				//fmt.Println("Additional Severity: ", fwl.depth, " * ", fwl.scanningRange)
@@ -210,4 +211,60 @@ func DayThirteenPartTwo() {
 	}
 }
 
+func getPositionAt(time int, scanningRange int) int {
+	mid := scanningRange - 1;
+	pos := mid - abs(time % (2 * mid) - mid);
+
+	return pos
+}
+
+func DayThirteenAlt() {
+
+
+	fmt.Println("Day 13 Alt")
+
+	input := ReadFile("day13-input.txt")
+
+	fireWallDefinitions := strings.Split(input, "\n")
+
+	firewall := make(map[int]fireWallLayer)
+
+	maxDepth := 0
+
+	for i :=0 ; i <len(fireWallDefinitions) ; i++ {
+
+		parts := strings.Split(fireWallDefinitions[i], ":")
+
+		fwl := fireWallLayer{atoi(parts[0]), atoi(strings.Trim(parts[1], " ")), 1,SCANNING_UP}
+
+		if fwl.depth > maxDepth {
+			maxDepth = fwl.depth
+		}
+
+		firewall[fwl.depth] = fwl
+	}
+
+
+	for i :=0 ; i < 10000000 ; i++ {
+
+		if i % 10000 == 0 {
+			fmt.Println(i)
+		}
+
+		caught := false
+		for depth,flw := range firewall {
+
+			if getPositionAt(i+depth, flw.scanningRange) == 0 {
+				caught = true
+			}
+		}
+
+		if !caught {
+			fmt.Println("Not caught at", i)
+			break
+		}
+	}
+
+
+}
 
