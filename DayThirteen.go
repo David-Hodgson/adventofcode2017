@@ -247,15 +247,16 @@ func DayThirteenAlt() {
 
 	for i :=0 ; i < 10000000 ; i++ {
 
-		if i % 10000 == 0 {
-			fmt.Println(i)
-		}
+		//if i % 10000 == 0 {
+		//	fmt.Println(i)
+		//}
 
 		caught := false
 		for depth,flw := range firewall {
 
 			if getPositionAt(i+depth, flw.scanningRange) == 0 {
 				caught = true
+				break;
 			}
 		}
 
