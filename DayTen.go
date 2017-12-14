@@ -131,17 +131,14 @@ func DayTenPartOne() {
 	fmt.Println("Result:", (loop[0]*loop[1]))
 }
 
-func DayTenPartTwo() {
-
-	fmt.Println("Day Ten - Part Two")
+func KnotHash(input string) string {
 
 	loop := buildLoop(256)
-	inputString  := "147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70"
 
-	inputs := make([]int, len(inputString));
+	inputs := make([]int, len(input));
 
-	for i := 0 ; i < len(inputString) ; i++ {
-		inputs[i] = int(inputString[i])
+	for i := 0 ; i < len(input) ; i++ {
+		inputs[i] = int(input[i])
 	}
 	extras := [] int {17, 31, 73, 47, 23}
 
@@ -169,8 +166,18 @@ func DayTenPartTwo() {
 
 	hex := toHexString(dense)
 
-	fmt.Println("Knot Hex:", hex)
+	return hex
+}
 
+func DayTenPartTwo() {
+
+	fmt.Println("Day Ten - Part Two")
+
+	inputString  := "147,37,249,1,31,2,226,0,161,71,254,243,183,255,30,70"
+
+	hex := KnotHash(inputString)
+
+	fmt.Println("Knot Hex:", hex)
 
 }
 
