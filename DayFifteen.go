@@ -36,14 +36,10 @@ func DayFifteenExample() {
 		genAValue = runGenerator(genAValue, genAFactor)
 		genBValue = runGenerator(genBValue, genBFactor)
 
-		binaryAValue := fmt.Sprintf("%016b", genAValue)
-		binaryBValue := fmt.Sprintf("%016b", genBValue)
-
-		binaryAValue = binaryAValue[len(binaryAValue)-16:]
-		binaryBValue = binaryBValue[len(binaryBValue)-16:]
+		binaryAValue := uint16(genAValue)
+		binaryBValue := uint16(genBValue)
 
 		if binaryAValue == binaryBValue {
-			fmt.Println("Match at",i	)
 			score++
 		}
 
@@ -69,11 +65,8 @@ func DayFifteenPartOne() {
 		genAValue = runGenerator(genAValue, genAFactor)
 		genBValue = runGenerator(genBValue, genBFactor)
 
-		binaryAValue := fmt.Sprintf("%016b", genAValue)
-		binaryBValue := fmt.Sprintf("%016b", genBValue)
-
-		binaryAValue = binaryAValue[len(binaryAValue)-16:]
-		binaryBValue = binaryBValue[len(binaryBValue)-16:]
+		binaryAValue := uint16(genAValue)
+		binaryBValue := uint16(genBValue)
 
 		if binaryAValue == binaryBValue {
 			score++
@@ -100,11 +93,8 @@ func DayFifteenExample2() {
 		genAValue = runGeneratorPickey(genAValue, genAFactor, 4)
 		genBValue = runGeneratorPickey(genBValue, genBFactor,8)
 
-		binaryAValue := fmt.Sprintf("%016b", genAValue)
-		binaryBValue := fmt.Sprintf("%016b", genBValue)
-
-		binaryAValue = binaryAValue[len(binaryAValue)-16:]
-		binaryBValue = binaryBValue[len(binaryBValue)-16:]
+		binaryAValue := uint16(genAValue)
+		binaryBValue := uint16(genBValue)
 
 		if binaryAValue == binaryBValue {
 			score++
