@@ -94,7 +94,7 @@ func DaySixteenExample() {
 
 func DaySixteenPartOne() {
 
-	fmt.Println("Day 16 - Example")
+	fmt.Println("Day 16 - Part One")
 
 	input := ReadFile("day16-input.txt")
 
@@ -109,6 +109,60 @@ func DaySixteenPartOne() {
 		programList = doCommand(commandList[j], programList)
 	}
 
+	for k :=0 ; k <len(programList); k++ {
+		fmt.Print(programList[k])
+	}
+	fmt.Println()
+}
+
+func IntArrayEquals(a []string, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func DaySixteenPartTwo() {
+
+	fmt.Println("Day 16 - Part Two")
+
+	input := ReadFile("day16-input.txt")
+
+	commandList := strings.Split(input, ",")
+	fmt.Println(commandList)
+
+	programList := populateProgramList(16)
+
+	originalProgramList := populateProgramList(16);
+
+	//Running the input determine that 60 rounds reset the program list
+	//so for a billion steps we divide by 60 and see how many steps
+	//might be remaining and only run those
+	extraSteps := 1000000000 % 60
+	
+	fmt.Println("extra steps", extraSteps)
+
+	for i:= 0 ; i< extraSteps ; i++ {
+
+		if i %1000 == 0 {
+			fmt.Println("Loop", i)
+		}
+
+		if IntArrayEquals(programList, originalProgramList) {
+			fmt.Println("Array is back to how it started at loop",i)
+		}
+
+		for j := 0; j < len(commandList); j++ {
+
+			programList = doCommand(commandList[j], programList)
+		}
+
+	}
 	for k :=0 ; k <len(programList); k++ {
 		fmt.Print(programList[k])
 	}
