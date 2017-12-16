@@ -140,21 +140,18 @@ func DaySixteenPartTwo() {
 
 	originalProgramList := populateProgramList(16);
 
-	//Running the input determine that 60 rounds reset the program list
-	//so for a billion steps we divide by 60 and see how many steps
-	//might be remaining and only run those
-	extraSteps := 1000000000 % 60
-	
-	fmt.Println("extra steps", extraSteps)
 
-	for i:= 0 ; i< extraSteps ; i++ {
+	for i:= 0 ; i< 1000000000 ; i++ {
 
 		if i %1000 == 0 {
 			fmt.Println("Loop", i)
 		}
 
-		if IntArrayEquals(programList, originalProgramList) {
+		if i != 0 && IntArrayEquals(programList, originalProgramList) {
 			fmt.Println("Array is back to how it started at loop",i)
+			extraSteps := 1000000000 % 60
+
+			i = 1000000000 - extraSteps
 		}
 
 		for j := 0; j < len(commandList); j++ {
