@@ -94,14 +94,22 @@ func DaySeventeenPartTwo() {
 
 	currentPos := &list
 
+	valueOne :=0
 
-	for i:= 1 ; i < 500 000 001 ; i++ {
+	for i:= 1 ; i < 500000001 ; i++ {
 
-		if i % 1000 == 0 {
-			fmt.Println("inserting:", i)
-		}
+		//if i % 1000 == 0 {
+		//	fmt.Println("inserting:", i)
+		//}
 		for j :=0 ; j < spinlock ;j++ {
 			currentPos = currentPos.next
+		}
+
+		if i>1 {
+			if list.next.value != valueOne {
+				valueOne = list.next.value
+				fmt.Println("Value at pos 1 changed to:", valueOne)
+			}
 		}
 
 		currentPos.insertAfter(i)
