@@ -12,6 +12,7 @@ type vector struct {
 
 type particle struct {
 	position, velocity,acceleration vector
+	destroyed bool
 }
 
 func (p *particle) update() {
@@ -60,7 +61,7 @@ func parseInputLine(vectorInput string) particle{
 	accString := vectorInput[accStart+3:]
 	accString = accString[0:strings.Index(accString, ">")]
 
-	return particle{parseCoordStringToVector(posString), parseCoordStringToVector(velString), parseCoordStringToVector(accString)}
+	return particle{parseCoordStringToVector(posString), parseCoordStringToVector(velString), parseCoordStringToVector(accString),false}
 }
 
 func DayTwentyExample() {
@@ -137,7 +138,60 @@ func DayTwentyPartOne() {
 
 }
 
+func DayTwentyPartTwo() {
 
+	fmt.Println("Day 20 - Part Two")
+
+	input := ReadFile("day20-input.txt")
+
+	inputList := strings.Split(input, "\n")
+
+	particleList := make([]particle, len(inputList))
+
+	for i := 0; i<len(inputList); i++ {
+
+		newParticle := parseInputLine(inputList[i])
+		particleList[i] = newParticle
+
+	}
+
+
+	for j := 0; j < 10000 ;j++ {
+
+		collisonMap := make(map[vector]*particle)
+
+		for k := 0; k < len(particleList); k++ {
+
+			currentParticle := &particleList[k]
+
+			if currentParticle.destroyed {
+				continue
+			}
+
+			currentParticle.update()
+
+			if collidedParticle, occupied := collisonMap[currentParticle.position]; occupied {
+				collidedParticle.destroyed = true
+				currentParticle.destroyed = true
+			}
+
+			collisonMap[currentParticle.position] = currentParticle
+
+		}
+
+		fmt.Println("At tick", j," there were",len(collisonMap), "enteries in the collison map")
+	}
+
+	particleCount := 0
+
+	for x := 0 ; x < len(particleList) ; x++ {
+		if !particleList[x].destroyed {
+			particleCount++
+		}
+	}
+
+	fmt.Println("Particles left", particleCount)
+}
 
 
 
