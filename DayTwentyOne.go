@@ -41,8 +41,6 @@ func printMatrix(matrix [][]bool) {
 }
 
 func rotateMatrix(matrix [][]bool) [][]bool {
-	//static int[,] RotateMatrix(int[,] matrix, int n) {
-
 	matrixSize := len(matrix)
 	outputMatrix := make([][]bool, matrixSize)
 
@@ -50,7 +48,6 @@ func rotateMatrix(matrix [][]bool) [][]bool {
 		outputMatrix[i] = make([]bool, matrixSize)
 
 		for j := 0; j < matrixSize; j++  {
-			//ret[i, j] = matrix[n - j - 1, i];
 			outputMatrix[i][j] = matrix[matrixSize-j-1][i]
 		}
 	}
@@ -59,8 +56,6 @@ func rotateMatrix(matrix [][]bool) [][]bool {
 }
 
 func flipMatrixVertical(matrix [][]bool) [][]bool {
-//static int[,] RotateMatrix(int[,] matrix, int n) {
-
 	matrixSize := len(matrix)
 	outputMatrix := make([][]bool, matrixSize)
 
@@ -68,7 +63,6 @@ func flipMatrixVertical(matrix [][]bool) [][]bool {
 		outputMatrix[i] = make([]bool, matrixSize)
 
 		for j := 0; j < matrixSize; j++  {
-			//ret[i, j] = matrix[n - j - 1, i];
 			outputMatrix[i][j] = matrix[matrixSize-i -1][j]
 		}
 	}
@@ -77,7 +71,6 @@ func flipMatrixVertical(matrix [][]bool) [][]bool {
 }
 
 func flipMatrixHorizontal(matrix [][]bool) [][]bool {
-	//static int[,] RotateMatrix(int[,] matrix, int n) {
 
 	matrixSize := len(matrix)
 	outputMatrix := make([][]bool, matrixSize)
@@ -86,7 +79,6 @@ func flipMatrixHorizontal(matrix [][]bool) [][]bool {
 		outputMatrix[i] = make([]bool, matrixSize)
 
 		for j := 0; j < matrixSize; j++  {
-			//ret[i, j] = matrix[n - j - 1, i];
 			outputMatrix[i][j] = matrix[i][matrixSize -j - 1]
 		}
 	}
@@ -158,21 +150,6 @@ func applyRule(inputMatrix [][]bool, rules []enchancementRule) [][]bool {
 	matrixCombos[6] = rotateMatrix(matrixCombos[5])
 	matrixCombos[7] = rotateMatrix(matrixCombos[6])
 
-	//fmt.Println()
-	//printMatrix(matrixCombos[0])
-	//fmt.Println()
-	//printMatrix(matrixCombos[1])
-	//fmt.Println()
-	//printMatrix(matrixCombos[2])
-	//fmt.Println()
-	//printMatrix(matrixCombos[3])
-	//fmt.Println()
-	//printMatrix(matrixCombos[4])
-	//fmt.Println()
-	//printMatrix(matrixCombos[5])
-	//fmt.Println()
-
-
 	for i := 0; i < len(rules); i++ {
 		for j := 0 ; j < len(matrixCombos) ;j++ {
 			if areMatrixEqual(rules[i].inputMatrix, matrixCombos[j]) {
@@ -212,8 +189,6 @@ func enchanceMatrix(matrix [][]bool, rules []enchancementRule) [][]bool {
 				for y:=0;y<chunkSize;y++ {
 					subMatrix[x][y] = matrix[x+(i*chunkSize)][y+(j*chunkSize)]
 				}
-
-
 			}
 
 			subMatrix = applyRule(subMatrix, rules)
@@ -234,8 +209,6 @@ func enchanceMatrix(matrix [][]bool, rules []enchancementRule) [][]bool {
 func DayTwentyOneExample() {
 
 	fmt.Println("Day 20 - Example")
-
-	//startingMatrixDescriptions := strings.Split(".#.\n..#\n###", "\n")
 
 	matrix := makeMatrix(".#.\n..#\n###")
 
@@ -313,9 +286,7 @@ func DayTwentyOnePartTwo() {
 
 	for i:=0 ;i<18 ;i ++ {
 		matrix = enchanceMatrix(matrix,rules)
-		//printMatrix(matrix)
 	}
-
 
 	pixelCount := 0
 
