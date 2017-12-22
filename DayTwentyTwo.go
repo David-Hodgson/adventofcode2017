@@ -92,7 +92,6 @@ func virusCarrierDoWork(x,y,currentDirection int,grid map[string]int) (int,int, 
 	if currentState != INFECTED {
 		grid[currentPosString] = INFECTED
 		infectionCount++
-		fmt.Println("Infecting. Count:",infectionCount)
 	} else {
 		grid[currentPosString] = CLEANED
 	}
@@ -150,6 +149,54 @@ func DayTwentyTwoExample() {
 	fmt.Println("x:",x,"y:",y)
 	fmt.Println("Current Direction:",dir)
 	fmt.Println("Infection Count:", infectionCount)
+}
+
+func DayTwentyTwoPartOne() {
+
+	fmt.Println("Day 22 - Part One")
+
+	x,y := 0,0
+	dir := NORTH
+
+	fmt.Println("x:",x,"y:",y)
+	fmt.Println("Current Direction:",dir)
+
+	grid := make(map[string]int)
+
+	inputGrid := ReadFile("day22-input.txt") 
+
+	gridRows := strings.Split(inputGrid, "\n")
+
+	gridSize := len(gridRows)
+	fmt.Println("Grid Size:", gridSize)
+
+	centerX := gridSize /2
+	centerY := centerX
+
+	fmt.Println("center point, x:", centerX, "y:", centerY)
+
+	initialInfectionCount := 0
+
+	for gridY := 0 ; gridY < len(gridRows) ; gridY++ {
+		convertedY := (gridY-centerY)*-1
+		for gridX := 0 ; gridX < len(gridRows[gridY]); gridX++ {
+			convertedX := (gridX - centerX)
+			if string(gridRows[gridY][gridX]) == "#" {
+				grid[xyToString(convertedX,convertedY)] = INFECTED
+				initialInfectionCount++	
+			}
+		}
+	}
+
+	infectionCount = 0
+
+	for i:= 0 ; i< 10000; i++ {
+		x,y,dir = virusCarrierDoWork(x,y,dir,grid)
+	}
+	fmt.Println("x:",x,"y:",y)
+	fmt.Println("Current Direction:",dir)
+	fmt.Println("Infection Count:", infectionCount)
+	fmt.Println("Initial Infection Count:", initialInfectionCount)
 }
 
 
