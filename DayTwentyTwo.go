@@ -3,6 +3,7 @@ package adventofcode2017
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 const NORTH = 1
@@ -73,6 +74,8 @@ func moveVirusCarrier(x,y,currentDirection int) (newX,newY int) {
 	return newX,newY
 }
 
+var infectionCount int = 0
+
 func virusCarrierDoWork(x,y,currentDirection int,grid map[string]int) (int,int, int) {
 
 	//if current node is infect - turn right else turn left
@@ -86,8 +89,10 @@ func virusCarrierDoWork(x,y,currentDirection int,grid map[string]int) (int,int, 
 	}
 
 	//if current node is clean - node becomes infected else becomes cleaned
-	if currentState == CLEAN {
+	if currentState != INFECTED {
 		grid[currentPosString] = INFECTED
+		infectionCount++
+		fmt.Println("Infecting. Count:",infectionCount)
 	} else {
 		grid[currentPosString] = CLEANED
 	}
@@ -113,12 +118,38 @@ func DayTwentyTwoExample() {
 
 	grid := make(map[string]int)
 
+	inputGrid := "..#\n#..\n..."
+
+	gridRows := strings.Split(inputGrid, "\n")
+
+	gridSize := len(gridRows)
+	fmt.Println("Grid Size:", gridSize)
+
+	centerX := gridSize /2
+	centerY := centerX
+
+	fmt.Println("center point, x:", centerX, "y:", centerY)
+
+	for gridY := 0 ; gridY < len(gridRows) ; gridY++ {
+		fmt.Println("Grid Row:", gridY)
+		fmt.Println("Gird Row - center:", (gridY -centerY)*-1)
+		convertedY := (gridY-centerY)*-1
+		for gridX := 0 ; gridX < len(gridRows[gridY]); gridX++ {
+			convertedX := (gridX - centerX)
+			if string(gridRows[gridY][gridX]) == "#" {
+				grid[xyToString(convertedX,convertedY)] = INFECTED
+			}
+		}
+	}
+
 	fmt.Println(grid)
 
-	x,y,dir = virusCarrierDoWork(x,y,dir,grid)
-
+	for i:= 0 ; i< 10000; i++ {
+		x,y,dir = virusCarrierDoWork(x,y,dir,grid)
+	}
 	fmt.Println("x:",x,"y:",y)
 	fmt.Println("Current Direction:",dir)
+	fmt.Println("Infection Count:", infectionCount)
 }
 
 
