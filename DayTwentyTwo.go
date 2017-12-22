@@ -14,6 +14,8 @@ const WEST = 4
 const CLEAN = 0
 const INFECTED = 1
 const CLEANED = 2
+const WEAKENED = 3
+const FLAGGED = 4
 
 func turnRight(currentDir int) int {
 
@@ -95,6 +97,36 @@ func virusCarrierDoWork(x,y,currentDirection int,grid map[string]int) (int,int, 
 	} else {
 		grid[currentPosString] = CLEANED
 	}
+	//move one node forward
+	x,y = moveVirusCarrier(x,y,currentDirection)
+	return x,y,currentDirection
+}
+
+func evolvedVirusCarrierDoWork(x,y,currentDirection int,grid map[string]int) (int,int, int) {
+
+	currentPosString := xyToString(x,y)
+	currentState := grid[currentPosString]
+	//if node is clean turn left
+	if currentState == INFECTED {
+		currentDirection = turnRight(currentDirection)
+		grid[currentPosString] = FLAGGED
+	}
+	//if node is weaked do not turn
+	if currentState == WEAKENED {
+		grid[currentPosString] = INFECTED
+		infectionCount++
+	}
+	//if infected turn right
+	if currentState == CLEAN {
+		currentDirection = turnLeft(currentDirection)
+		grid[currentPosString] = WEAKENED
+	} 
+	//if flagged reverse direction
+	if currentState == FLAGGED {
+		currentDirection = turnLeft(turnLeft(currentDirection))
+		grid[currentPosString] = CLEAN
+	}
+
 	//move one node forward
 	x,y = moveVirusCarrier(x,y,currentDirection)
 	return x,y,currentDirection
@@ -199,5 +231,43 @@ func DayTwentyTwoPartOne() {
 	fmt.Println("Initial Infection Count:", initialInfectionCount)
 }
 
+
+func DayTwentyTwoPartTwo() {
+
+	fmt.Println("Day 22 - Part Two")
+
+	x,y := 0,0
+	dir := NORTH
+
+	grid := make(map[string]int)
+
+	inputGrid := ReadFile("day22-input.txt") 
+
+	gridRows := strings.Split(inputGrid, "\n")
+	gridSize := len(gridRows)
+
+	centerX := gridSize /2
+	centerY := centerX
+
+	for gridY := 0 ; gridY < len(gridRows) ; gridY++ {
+		convertedY := (gridY-centerY)*-1
+		for gridX := 0 ; gridX < len(gridRows[gridY]); gridX++ {
+			convertedX := (gridX - centerX)
+			if string(gridRows[gridY][gridX]) == "#" {
+				grid[xyToString(convertedX,convertedY)] = INFECTED
+			}
+		}
+	}
+
+	infectionCount = 0
+
+	for i:= 0 ; i< 10000000; i++ {
+		x,y,dir = evolvedVirusCarrierDoWork(x,y,dir,grid)
+	}
+
+	fmt.Println("x:",x,"y:",y)
+	fmt.Println("Current Direction:",dir)
+	fmt.Println("Infection Count:", infectionCount)
+}
 
 
